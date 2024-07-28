@@ -4,8 +4,11 @@ from django.conf import settings
 from rest_framework.authentication import CSRFCheck
 from rest_framework import exceptions
 
+def dummy_get_response(request):  # see https://stackoverflow.com/questions/70589170/middlewaremixin-missing-required-argument-get-response-django
+    return None
+
 def enforce_csrf(request):
-    check = CSRFCheck()
+    check = CSRFCheck(dummy_get_response)
     check.process_request(request)
     reason = check.process_view(request, None, (), {})
     if reason:
